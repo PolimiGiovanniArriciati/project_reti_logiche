@@ -267,9 +267,9 @@ begin
 
     --Definizione di o_done
     with addr_set select
- mux_len_seq <= i_data when '1',
-        o_reg11 when '0',
-        "XXXXXXXX" when others;
+        mux_len_seq <= i_data when '1',
+            o_reg11 when '0',
+            "XXXXXXXX" when others;
 
     sub <= "11111111" - mux_len_seq;
 
@@ -284,7 +284,7 @@ begin
         end if;
     end process;
 
-    o_done <= '1' when (o_reg11 = "00000000") else '0';
+    actually_done <= '1' when (o_reg11 = "00000000") else '0';
 
 
 
@@ -373,6 +373,7 @@ architecture Behavioral of project_reti_logiche is
     signal op_cycle : std_logic_vector(1 downto 0);
     signal out_set : std_logic;
     signal write_address_sel : std_logic;
+    signal actully_done : std_logic;
     type S is(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9);
     signal cur_state, next_state : S;
 
@@ -414,7 +415,7 @@ begin
     end if;
 end process;
 
-process(cur_state, i_start, o_done)
+process(cur_state, i_start, actually_done)
 begin
     next_state <= cur_state;
     case cur_state is
@@ -429,7 +430,7 @@ begin
         when S2 =>
             next_state <= S3;
         when S3 =>
-            if o_done = '1' then
+            if actully_done = '1' then
                 next_state <= S4;
             else
                 next_state <= S5;
@@ -441,7 +442,7 @@ begin
         when S6 =>
             next_state <= S7;
         when S7=>
-            if o_done = '0' then
+            if actully_done = '0' then
                 next_state <= S8;
             else
                 next_state <= S1;
@@ -474,6 +475,7 @@ o_done <= '0';
 o_en <= '0';
 o_we <= '0';
 o_address <= "0000000000000000";
+actully_done <= '0';
 case cur_state is
 			when S0 => 
 			when S1 =>
@@ -493,6 +495,7 @@ case cur_state is
 				out_set <= '0';
 				addr_set <= '0';
 				o_we <= '0';
+                actually_done <= '0;'
 				o_done <= '0';
 				o_en <= '0';
 				write_address_sel <= '0';
