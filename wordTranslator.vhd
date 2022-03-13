@@ -177,15 +177,15 @@ begin
     with sel_out1 select
         o_output1(0) <= o_reg4 when "00",
             o_reg4 when "10",
-            (not) o_reg4 when "01",
-            (not) o_reg4 when "11",
+            not(o_reg4) when "01",
+            not(o_reg4) when "11",
             'X' when others;
 
     with sel_out1 select
         o_output1(1) <= o_reg4 when "00",
             o_reg4 when "11",
-            (not) o_reg4 when "01",
-            (not) o_reg4 when "10",
+            not(o_reg4) when "01",
+            not(o_reg4) when "10",
             'X' when others;
 
     sel_out2 <= (o_reg3 & o_reg4);
@@ -193,15 +193,15 @@ begin
     with sel_out2 select
         o_output2(0) <= o_reg5 when "00",
             o_reg5 when "10",
-            (not) o_reg5 when "01",
-            (not) o_reg5 when "11",
+            not(o_reg5) when "01",
+            not(o_reg5) when "11",
             'X' when others;
 
     with sel_out2 select
         o_output2(1) <= o_reg5 when "00",
             o_reg5 when "11",
-            (not) o_reg5 when "01",
-            (not) o_reg5 when "10",
+            not(o_reg5) when "01",
+            not(o_reg5) when "10",
             'X' when others;
 
     sel_out3 <= (o_reg5 & o_reg4)    ;
@@ -209,21 +209,21 @@ begin
     with sel_out3 select
         o_output3(0) <= o_reg6 when "00",
             o_reg6 when "10",
-            (not) o_reg6 when "01",
-            (not) o_reg6 when "11",
+            not(o_reg6) when "01",
+            not(o_reg6) when "11",
             'X' when others;
 
     with sel_out3 select
         o_output3(1) <= o_reg6 when "00",
             o_reg6 when "11",
-            not o_reg6 when "01",
-            not o_reg6 when "10",
+            not(o_reg6) when "01",
+            not(o_reg6) when "10",
             'X' when others;
 
     process(i_clk, i_rst)
     begin
         if(i_rst = '0') then
-            o_reg7 <= "00000000";
+            o_reg7 <= "000000";
         elsif i_clk'event and i_clk = '1' then
             if(r7_load = '1') then
                 o_reg7 <= o_output1 & o_output2 & o_output3;
@@ -234,7 +234,7 @@ begin
     process(i_clk, i_rst)
     begin
         if(i_rst = '0') then
-            o_reg8 <= "00000000";
+            o_reg8 <= "0000";
         elsif i_clk'event and i_clk = '1' then
             if(r8_load = '1') then
                 o_reg8 <= o_output2 & o_output3;
@@ -249,7 +249,7 @@ begin
 
 
 --Definizione di o_done
-    with address_set select  
+    with addr_set select  
         mux_len_seq <= i_data when '1',
                 o_reg11 when '0',
                 "XXXXXXXX" when others;
@@ -278,11 +278,11 @@ begin
     reg9: process(i_clk, i_rst)
     begin
         if(i_rst = '0') then
-            o_reg9 <= "00000000";
+            o_reg9 <= "0000000000000000";
         elsif i_clk'event and i_clk = '1' then
-            if(r9_load = '1' && addr_set = '1') then
-                o_reg9 <= "00000000";
-            else if(r9_load = '1') then
+            if(r9_load = '1' and addr_set = '1') then
+                o_reg9 <= "0000000000000000";
+            elsif(r9_load = '1') then
                 o_reg9 <= sum_add_r;
             end if;
         end if;
@@ -293,10 +293,10 @@ begin
     reg10: process(i_clk, i_rst)
     begin
         if(i_rst = '0') then
-            o_reg10 <= "00000000";
+            o_reg10 <= "0000000000000000";
         elsif i_clk'event and i_clk = '1' then
-            if(r10_load = '1' && addr_set = '1') then
-                o_reg10 <= 0000001111101000;
+            if(r10_load = '1' and addr_set = '1') then
+                o_reg10 <= "0000001111101000";
             elsif(r10_load = '1') then
                 o_reg10 <= sum_add_w;
             end if;
@@ -304,7 +304,7 @@ begin
     end process;
    
     
-    with addr_sel select
+    with addr_set select
         o_address <= o_reg9 when '0',
             o_reg10 when '1',
             "XXXXXXXXXXXXXXXX" when others;
