@@ -21,31 +21,7 @@ end project_reti_logiche;
 
 architecture Behavioral of project_reti_logiche is
 component datapath is
-	Port()
-
-signal addr_read_increase : STD_LOGIC;
-signal read_set : STD_LOGIC;
-signal addr_write_increase : STD_LOGIC;
-signal o_addr_write : STD_LOGIC_VECTOR(15 downto 0);	--di controllo che vadatutto bene con la ALU forse serve un registro qui.
-signal lenght_sequence_select : STD_LOGIC;
-signal lenght_sequence_increase : STD_LOGIC;			--anche qui forse serve un registro.
-signal operation_cycle : STD_LOGIC;
-signal first_operation : STD_LOGIC;
-signal r1_load : STD_LOGIC;
-signal r2_load : STD_LOGIC;
-signal r3_load : STD_LOGIC;
-signal r4_load : STD_LOGIC;
-signal r5_load : STD_LOGIC;
-signal r6_load : STD_LOGIC;
-signal r7_load : STD_LOGIC;
-signal r8_load : STD_LOGIC;
-signal out_select : STD_LOGIC;
-type S is(S0, S1, S2, S3, S4, S5, S6);
-signal cur_state, next_state : S;
-
-begin
-	DATAPATH0: datapath port map(
-		 i_clk : in std_logic;
+	Port(i_clk : in std_logic;
          i_rst : in std_logic;
          i_start : in std_logic;
          i_data : in std_logic_vector(7 downto 0);
@@ -60,7 +36,6 @@ begin
          r9_load : in std_logic;
          r10_load : in std_logic;
          r11_load : in std_logic;
-         len_seq_set : in std_logic;
          addr_set : in std_logic;
          first_operation : in std_logic;
          op_cycle : in std_logic_vector(1 downto 0);
@@ -69,7 +44,37 @@ begin
          o_address : out std_logic_vector(15 downto 0);
          o_en : out std_logic;
          o_we : out std_logic;
-         o_data : out std_logic_vector(7 downto 0)
+         o_data : out std_logic_vector(7 downto 0));
+end component;
+type S is(S0, S1, S2, S3, S4, S5, S6);
+signal cur_state, next_state : S;
+
+begin
+	DATAPATH0: datapath port map(
+		 i_clk,
+         i_rst,
+         i_start,
+         i_data : in std_logic_vec,
+         r1_load,
+         r2_load,
+         r3_load,
+         r4_load,
+         r5_load,
+         r6_load,
+         r7_load,
+         r8_load,
+         r9_load,
+         r10_load,
+         r11_load,
+         addr_sel,
+         first_operation,
+         op_cycle,
+         out_set,
+         o_done,
+         o_address,
+         o_en,
+         o_we,
+         o_data
     )
 
 	process(i_clk, i_rst)
@@ -135,7 +140,7 @@ begin
 		op_cycle <= '00';
 		first_operation <= '0';
 		out_select <= '0';
-		set <= '0';
+		addr_sel <= '0';
 		o_done <= '0';
 		o_en <= '0';
 		o_we <= '0';
@@ -157,18 +162,20 @@ begin
 				op_cycle <= '00';
 				first_operation <= '0';
 				out_select <= '0';
-				set <= '0';
+				addr_sel <= '0';
+				o_we <= '0';
 				o_done <= '0';
 				o_en <= '0';
 				write_address_sel <= '0';
 				o_address <= '0000000000000000';
 			when S2 =>
-				set <= '1';
+				addr_sel <= '1'
+				o_we <= '1';
 				o_en <= '1';
 				r9_load <= '1';
 				r10_load <= '1';
 			when S3 =>
-				set <= '0';
+				addr_sel <= '0';
 				r9_load <= '1';
 				r10_load <= '0';
 				r11_load <= '1';
@@ -194,6 +201,7 @@ begin
 				r7_load <= '0';
 				r8_load <= '1';
 				write_address_sel <= '1';
+				o_we <= '1';
 			when S7 =>
 				op_cycle <= '11';
 				r6_load <= '0';
@@ -203,6 +211,7 @@ begin
 				r11_load <= '1';
 			when S8 =>
 				write_address_sel => '0';
+				o_we <= '0';
 				r9_load <= '1';
 				r11_load <= '0';
 			when S9 =>		
