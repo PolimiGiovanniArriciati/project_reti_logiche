@@ -19,7 +19,9 @@ end project_reti_logiche;
 
 
 
-architecture Behavioural of project_reti_logiche is
+architecture Behavioral of project_reti_logiche is
+component datapath is
+	Port()
 
 signal addr_read_increase : STD_LOGIC;
 signal read_set : STD_LOGIC;
@@ -43,15 +45,38 @@ signal cur_state, next_state : S;
 
 begin
 	DATAPATH0: datapath port map(
-		fili...
-
-		)
+		 i_clk : in std_logic;
+         i_rst : in std_logic;
+         i_start : in std_logic;
+         i_data : in std_logic_vector(7 downto 0);
+         r1_load : in std_logic;
+         r2_load : in std_logic;
+         r3_load : in std_logic;
+         r4_load : in std_logic;
+         r5_load : in std_logic;
+         r6_load : in std_logic;
+         r7_load : in std_logic;
+         r8_load : in std_logic;
+         r9_load : in std_logic;
+         r10_load : in std_logic;
+         r11_load : in std_logic;
+         len_seq_set : in std_logic;
+         addr_set : in std_logic;
+         first_operation : in std_logic;
+         op_cycle : in std_logic_vector(1 downto 0);
+         out_set : in std_logic;
+         o_done : out std_logic;
+         o_address : out std_logic_vector(15 downto 0);
+         o_en : out std_logic;
+         o_we : out std_logic;
+         o_data : out std_logic_vector(7 downto 0)
+    )
 
 	process(i_clk, i_rst)
 	begin
 		if(i_rst = '1') then
 			cur_state <= S0;
-		elsif i_clk'event and i_clk = '1' then					--'
+		elsif i_clk'event and i_clk = '1' then					
 			cur_state <= next_state;
 		end if;
 	end process;
@@ -135,7 +160,7 @@ begin
 				set <= '0';
 				o_done <= '0';
 				o_en <= '0';
-				o_we <= '0';
+				write_address_sel <= '0';
 				o_address <= '0000000000000000';
 			when S2 =>
 				set <= '1';
@@ -168,7 +193,7 @@ begin
 				out_select <= '0';
 				r7_load <= '0';
 				r8_load <= '1';
-				o_we <= '1';
+				write_address_sel <= '1';
 			when S7 =>
 				op_cycle <= '11';
 				r6_load <= '0';
@@ -177,7 +202,7 @@ begin
 				r10_load <= '1';
 				r11_load <= '1';
 			when S8 =>
-				o_we => '0';
+				write_address_sel => '0';
 				r9_load <= '1';
 				r11_load <= '0';
 			when S9 =>		
@@ -192,7 +217,7 @@ begin
 				op_cycle <= '01';
 		end case;
 	end process;
-end Behavioural;
+end Behavioral;
 
   
 
