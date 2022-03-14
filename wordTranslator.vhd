@@ -1,4 +1,4 @@
-library IEEE;
+\library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
@@ -113,29 +113,6 @@ begin
                         'X' when others;
     
     with op_cycle select
-<<<<<<< Updated upstream
- o_opcycle2 <= o_first_op2 when "01",
-        o_reg1(2) when "10",
-        o_reg1(5) when "11",
-        'X' when others;
-
-    with op_cycle select
- o_opcycle3 <= o_reg1(0) when "01",
-        o_reg1(3) when "10",
-        o_reg1(6) when "11",
-        'X' when others;
-
-    with op_cycle select
- o_opcycle4 <= o_reg1(1) when "01",
-        o_reg1(4) when "10",
-        o_reg1(7) when "11",
-        'X' when others;
-
-    with op_cycle select
- o_opcycle5 <= o_reg1(2) when "01",
-        o_reg1(5) when "10",
-        'X' when others;
-=======
         o_reg3_mux <=   o_first_op2_mux when "01",
                         o_reg1(2) when "10",
                         o_reg1(5) when "11",
@@ -157,7 +134,6 @@ begin
         o_reg6_mux <=   o_reg1(2) when "01",
                         o_reg1(5) when "10",
                         'X' when others;
->>>>>>> Stashed changes
 
     reg2: process(i_clk, i_rst)
     begin
@@ -219,20 +195,6 @@ begin
     sel_out1 <= o_reg3 & o_reg2;
 
     with sel_out1 select
-<<<<<<< Updated upstream
- o_output1(0) <= o_reg4 when "00",
-        o_reg4 when "10",
-        not(o_reg4) when "01",
-        not(o_reg4) when "11",
-        'X' when others;
-
-    with sel_out1 select
- o_output1(1) <= o_reg4 when "00",
-        o_reg4 when "11",
-        not(o_reg4) when "01",
-        not(o_reg4) when "10",
-        'X' when others;
-=======
         o_output1(0) <= o_reg4 when "00",
                         o_reg4 when "10",
                         not(o_reg4) when "01",
@@ -245,25 +207,10 @@ begin
                         not(o_reg4) when "01",
                         not(o_reg4) when "10",
                         'X' when others;
->>>>>>> Stashed changes
 
     sel_out2 <= (o_reg4 & o_reg3);
 
     with sel_out2 select
-<<<<<<< Updated upstream
- o_output2(0) <= o_reg5 when "00",
-        o_reg5 when "10",
-        not(o_reg5) when "01",
-        not(o_reg5) when "11",
-        'X' when others;
-
-    with sel_out2 select
- o_output2(1) <= o_reg5 when "00",
-        o_reg5 when "11",
-        not(o_reg5) when "01",
-        not(o_reg5) when "10",
-        'X' when others;
-=======
         o_output2(0) <= o_reg5 when "00",
                         o_reg5 when "10",
                         not(o_reg5) when "01",
@@ -276,25 +223,9 @@ begin
                         not(o_reg5) when "01",
                         not(o_reg5) when "10",
                         'X' when others;
->>>>>>> Stashed changes
-
     sel_out3 <= (o_reg5 & o_reg4);
 
     with sel_out3 select
-<<<<<<< Updated upstream
- o_output3(0) <= o_reg6 when "00",
-        o_reg6 when "10",
-        not(o_reg6) when "01",
-        not(o_reg6) when "11",
-        'X' when others;
-
-    with sel_out3 select
- o_output3(1) <= o_reg6 when "00",
-        o_reg6 when "11",
-        not(o_reg6) when "01",
-        not(o_reg6) when "10",
-        'X' when others;
-=======
         o_output3(0) <= o_reg6 when "00",
                         o_reg6 when "10",
                         not(o_reg6) when "01",
@@ -307,7 +238,6 @@ begin
                         not(o_reg6) when "01",
                         not(o_reg6) when "10",
                         'X' when others;
->>>>>>> Stashed changes
 
     reg7: process(i_clk, i_rst)
     begin
@@ -331,25 +261,14 @@ begin
         end if;
     end process;
 
-<<<<<<< Updated upstream
-    with out_set select
- o_data <= o_reg7 & o_output1 when '0',
-        o_output1 & o_output2 & o_reg8 when '1',
-        "XXXXXXXX" when others;
-
-
-    --Definizione di o_done
-    with addr_set select
-=======
     with out_sel select
-    o_data <=   o_reg7 & o_output1 when '0',
-                o_output1 & o_output2 & o_reg8 when '1',
-                "XXXXXXXX" when others;
+        o_data <=   o_reg7 & o_output1 when '0',
+                    o_output1 & o_output2 & o_reg8 when '1',
+                    "XXXXXXXX" when others;
 
 
 --------------------------------- Definizione di o_done ---------------------------------
     with len_seq_set select
->>>>>>> Stashed changes
         mux_len_seq <= i_data when '1',
             o_reg11 when '0',
             "XXXXXXXX" when others;
@@ -540,108 +459,6 @@ end process;
 
 process(cur_state)
 begin
-<<<<<<< Updated upstream
-r1_load <= '0';
-r2_load <= '0';
-r3_load <= '0';
-r4_load <= '0';
-r5_load <= '0';
-r6_load <= '0';
-r7_load <= '0';
-r8_load <= '0';
-r9_load <= '0';
-r10_load <= '0';
-r11_load <= '0';
-op_cycle <= "00";
-first_operation <= '0';
-out_set <= '0';
-addr_set <= '0';
-o_done <= '0';
-o_en <= '0';
-o_we <= '0';
-o_address <= "0000000000000000";
-actually_done <= '0';
-case cur_state is
-			when S0 => 
-			when S1 =>
-				r1_load <= '0';
-				r2_load <= '0';
-				r3_load <= '0';
-				r4_load <= '0';
-				r5_load <= '0';
-				r6_load <= '0';
-				r7_load <= '0';
-				r8_load <= '0';
-				r9_load <= '0';
-				r10_load <= '0';
-				r11_load <= '0';
-				op_cycle <= "00";
-				first_operation <= '0';
-				out_set <= '0';
-				addr_set <= '0';
-				o_we <= '0';
-                actually_done <= '0';
-				o_done <= '0';
-				o_en <= '0';
-				write_address_sel <= '0';
-				o_address <= "0000000000000000";
-			when S2 =>
-				addr_set <= '1';
-				o_we <= '1';
-				o_en <= '1';
-				r9_load <= '1';
-				r10_load <= '1';
-			when S3 =>
-				addr_set <= '0';
-				r9_load <= '1';
-				r10_load <= '0';
-				r11_load <= '1';
-			when S4 =>
-			when S5 =>
-				r9_load <= '0';
-				r11_load <= '0';
-				op_cycle <= "01";
-				first_operation <= '1';
-				r1_load <= '1';
-				r2_load <= '1';
-				r3_load <= '1';
-				r4_load <= '1';
-				r5_load <= '1';
-				r6_load <= '1';
-				r7_load <= '1';
-				first_operation <= '1';
-			when S6  =>
-				r1_load <= '0';
-				op_cycle <= "10";
-				first_operation <= '0';
-				out_set <= '0';
-				r7_load <= '0';
-				r8_load <= '1';
-				write_address_sel <= '1';
-				o_we <= '1';
-			when S7 =>
-				op_cycle <= "11";
-				r6_load <= '0';
-				r8_load <= '0';
-				out_set <= '1';
-				r10_load <= '1';
-				r11_load <= '1';
-			when S8 =>
-				write_address_sel <= '0';
-				o_we <= '0';
-				r9_load <= '1';
-				r11_load <= '0';
-			when S9 =>		
-				r9_load <= '0';
-				r1_load <= '1';
-				r2_load <= '1';
-				r3_load <= '1';
-				r4_load <= '1';
-				r5_load <= '1';
-				r6_load <= '1';
-				r7_load <= '1';
-				op_cycle <= "01";
-=======
     r1_load <= '0';
     r2_load <= '0';
     r3_load <= '0';
@@ -729,7 +546,6 @@ case cur_state is
 			r7_load <= '1';
             r10_load <= '1';
 			op_cycle <= "01";
->>>>>>> Stashed changes
 		end case;
 	end process;
 end Behavioral;
