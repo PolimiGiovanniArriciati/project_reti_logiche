@@ -157,7 +157,7 @@ begin
         end if;
     end process;
 
-    process(i_clk, i_rst)
+    reg4: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
             o_reg4 <= '0';
@@ -168,7 +168,7 @@ begin
         end if;
     end process;
 
-    process(i_clk, i_rst)
+    reg5: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
             o_reg5 <= '0';
@@ -179,7 +179,7 @@ begin
         end if;
     end process;
 
-    process(i_clk, i_rst)
+    reg6: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
             o_reg6 <= '0';
@@ -275,7 +275,7 @@ begin
 
     sub <= mux_len_seq - "00000001";
 
-    process(i_clk, i_rst)
+    reg11: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
             o_reg11 <= "00000000";
@@ -408,17 +408,14 @@ DATAPATH0: datapath port map(
         o_data
     );
 
-process(i_clk, i_rst)
+FSM_step: process(i_clk, i_rst)
 begin
-    --next_state <= S0;
-    if(i_rst = '1') then
-        cur_state <= S1;
-    elsif i_clk'event and i_clk = '1' then
+    if i_clk'event and i_clk = '1' then
         cur_state <= next_state;
     end if;
 end process;
 
-process(cur_state, i_start, actually_done)
+FSM_step_destination: process(cur_state, i_start, actually_done)
 begin
     next_state <= cur_state;
     case cur_state is
@@ -457,7 +454,7 @@ begin
     end case;
 end process;
 
-process(cur_state)
+states_signals: process(cur_state)
 begin
     r1_load <= '0';
     r2_load <= '0';
@@ -518,7 +515,6 @@ begin
 			write_address_sel <= '1';
 			o_we <= '1';
 		when S7 =>
-            write_address_sel <= '1';
             o_we <= '1';
             op_cycle <= "11";
             out_sel <= '1';
@@ -528,6 +524,7 @@ begin
             r5_load <= '1';
 			r10_load <= '1';
 			r11_load <= '1';
+            write_address_sel <= '1';
 		when S8 =>
             out_sel <= '1';
             r2_load <= '1';
