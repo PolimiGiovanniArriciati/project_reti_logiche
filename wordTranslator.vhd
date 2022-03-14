@@ -36,7 +36,7 @@ entity datapath is
          r9_load : in std_logic;
          r10_load : in std_logic;
          r11_load : in std_logic;
-         len_seq_set : in std_logic;
+         --len_seq_set : in std_logic;
          addr_set : in std_logic;
          first_operation : in std_logic;
          op_cycle : in std_logic_vector(1 downto 0);
@@ -71,6 +71,7 @@ architecture Behavioral of datapath is
     signal o_opcycle3 : std_logic;
     signal o_opcycle4 : std_logic;
     signal o_opcycle5 : std_logic;
+    signal actually_done : std_logic;
     signal o_output1 : std_logic_vector(1 downto 0);
     signal o_output2 : std_logic_vector(1 downto 0);
     signal o_output3 : std_logic_vector(1 downto 0);
@@ -96,19 +97,22 @@ begin
 
     --Traduzione della parola
     with first_operation select
- o_first_op <= '0' when '1',
-        o_reg4 when '0';
+        o_first_op <= '0' when '1',
+            o_reg4 when '0',
+            'X' when others;
 
     with first_operation select
- o_first_op2 <= '0' when '1',
-        o_reg5 when '0';
+        o_first_op2 <= '0' when '1',
+            o_reg5 when '0',
+            'X' when others;
+
 
     with op_cycle select
- o_opcycle1 <= o_first_op when "01",
-        o_reg1(1) when "10",
-        o_reg1(4) when "11",
-        'X' when others;
-
+        o_opcycle1 <= o_first_op when "01",
+            o_reg1(1) when "10",
+            o_reg1(4) when "11",
+            'X' when others;
+    
     with op_cycle select
  o_opcycle2 <= o_first_op2 when "01",
         o_reg1(2) when "10",
@@ -373,7 +377,7 @@ architecture Behavioral of project_reti_logiche is
     signal op_cycle : std_logic_vector(1 downto 0);
     signal out_set : std_logic;
     signal write_address_sel : std_logic;
-    signal actully_done : std_logic;
+    signal actually_done : std_logic;
     type S is(S0, S1, S2, S3, S4, S5, S6, S7, S8, S9);
     signal cur_state, next_state : S;
 
@@ -430,7 +434,7 @@ begin
         when S2 =>
             next_state <= S3;
         when S3 =>
-            if actully_done = '1' then
+            if actually_done = '1' then
                 next_state <= S4;
             else
                 next_state <= S5;
@@ -442,7 +446,7 @@ begin
         when S6 =>
             next_state <= S7;
         when S7=>
-            if actully_done = '0' then
+            if actually_done = '0' then
                 next_state <= S8;
             else
                 next_state <= S1;
@@ -475,7 +479,7 @@ o_done <= '0';
 o_en <= '0';
 o_we <= '0';
 o_address <= "0000000000000000";
-actully_done <= '0';
+actually_done <= '0';
 case cur_state is
 			when S0 => 
 			when S1 =>
@@ -495,7 +499,7 @@ case cur_state is
 				out_set <= '0';
 				addr_set <= '0';
 				o_we <= '0';
-                actually_done <= '0;'
+                actually_done <= '0';
 				o_done <= '0';
 				o_en <= '0';
 				write_address_sel <= '0';
