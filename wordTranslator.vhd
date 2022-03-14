@@ -275,7 +275,7 @@ begin
             o_reg11 when '0',
             "XXXXXXXX" when others;
 
-    sub <= "11111111" - mux_len_seq;
+    sub <= mux_len_seq - "00000001";
 
     process(i_clk, i_rst)
     begin
@@ -412,8 +412,9 @@ DATAPATH0: datapath port map(
 
 process(i_clk, i_rst)
 begin
+    --next_state <= S0;
     if(i_rst = '1') then
-        cur_state <= S0;
+        cur_state <= S1;
     elsif i_clk'event and i_clk = '1' then
         cur_state <= next_state;
     end if;
