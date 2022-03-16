@@ -1,0 +1,8 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../square.srcs/sources_1/new/datapath.vhd" \
+"../../../../square.srcs/sources_1/new/square.vhd" \
+"../../../../square.srcs/sim_1/new/square_tb.vhd" \
+
+# Do not sort compile order
+nosort

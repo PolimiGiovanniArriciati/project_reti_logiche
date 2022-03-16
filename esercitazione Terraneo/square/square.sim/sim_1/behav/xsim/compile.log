@@ -1,0 +1,66 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/datapath.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity datapath
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/datapath.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity datapath
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+ERROR: [VRFC 10-1449] this construct is only supported in VHDL 1076-2008 [/home/fede/square/square.srcs/sources_1/new/square.vhd:65]
+ERROR: [VRFC 10-1449] this construct is only supported in VHDL 1076-2008 [/home/fede/square/square.srcs/sources_1/new/square.vhd:96]
+ERROR: [VRFC 10-1504] unit behavioral ignored due to previous errors [/home/fede/square/square.srcs/sources_1/new/square.vhd:18]
+INFO: [VRFC 10-240] VHDL file /home/fede/square/square.srcs/sources_1/new/square.vhd ignored due to errors
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sources_1/new/square.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity square_tb

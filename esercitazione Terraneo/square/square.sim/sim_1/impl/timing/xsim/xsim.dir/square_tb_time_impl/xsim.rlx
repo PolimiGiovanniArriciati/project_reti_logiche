@@ -1,0 +1,12 @@
+
+{ 
+    crc :  7077493992434184748  , 
+    ccp_crc :  0  , 
+    cmdline : " -wto c629e2348d24497183ad17accfa36e44 --incr --debug typical --relax --mt 8 --maxdelay -L xil_defaultlib -L simprims_ver -L secureip --snapshot square_tb_time_impl -transport_int_delays -pulse_r 0 -pulse_int_r 0 -pulse_e 0 -pulse_int_e 0 xil_defaultlib.square_tb xil_defaultlib.glbl" , 
+    buildDate : "Jun 14 2018" , 
+    buildTime : "20:07:38" , 
+    linkCmd : "/usr/bin/gcc -Wa,-W  -O -fPIC  -m64  -Wl,--unresolved-symbols=ignore-all  -o \"xsim.dir/square_tb_time_impl/xsimk\"   \"xsim.dir/square_tb_time_impl/obj/xsim_0.lnx64.o\" \"xsim.dir/square_tb_time_impl/obj/xsim_1.lnx64.o\" \"/home/fede/vivado/Vivado/2018.2/lib/lnx64.o/librdi_simulator_kernel.so\"  \"/home/fede/vivado/Vivado/2018.2/lib/lnx64.o/librdi_simbridge_kernel.so\"" , 
+    aggregate_nets : 
+    [ 
+    ] 
+} 

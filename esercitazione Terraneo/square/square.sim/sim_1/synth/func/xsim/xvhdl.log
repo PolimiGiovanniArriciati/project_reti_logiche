@@ -1,0 +1,3 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/fede/square/square.sim/sim_1/synth/func/xsim/square_tb_func_synth.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity datapath
+INFO: [VRFC 10-307] analyzing entity square

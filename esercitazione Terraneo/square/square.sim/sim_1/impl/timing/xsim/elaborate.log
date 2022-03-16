@@ -1,0 +1,34 @@
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /home/fede/vivado/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto c629e2348d24497183ad17accfa36e44 --incr --debug typical --relax --mt 8 --maxdelay -L xil_defaultlib -L simprims_ver -L secureip --snapshot square_tb_time_impl -transport_int_delays -pulse_r 0 -pulse_int_r 0 -pulse_e 0 -pulse_int_e 0 xil_defaultlib.square_tb xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+INFO: [XSIM 43-3451] SDF backannotation process started with SDF file "square_tb_time_impl.sdf", for root module "square_tb/TOP0".
+INFO: [XSIM 43-3452] SDF backannotation was successful for SDF file "square_tb_time_impl.sdf", for root module "square_tb/TOP0".
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module simprims_ver.LUT6
+Compiling module simprims_ver.LUT5
+Compiling module simprims_ver.x_lut3_mux8
+Compiling module simprims_ver.LUT3
+Compiling module simprims_ver.FDCE_default
+Compiling module simprims_ver.x_lut2_mux4
+Compiling module simprims_ver.LUT2
+Compiling module simprims_ver.LUT4
+Compiling module simprims_ver.CARRY4
+Compiling module xil_defaultlib.datapath
+Compiling module simprims_ver.latchsre_ldce
+Compiling module simprims_ver.LDCE
+Compiling module simprims_ver.BUFG
+Compiling module simprims_ver.IBUF
+Compiling module simprims_ver.OBUF
+Compiling module xil_defaultlib.square
+Compiling architecture behavioral of entity xil_defaultlib.square_tb
+Built simulation snapshot square_tb_time_impl

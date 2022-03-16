@@ -1,0 +1,5 @@
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+Failure: simulation ended
+Time: 250 ns  Iteration: 0  Process: /square_tb/line__53  File: /home/fede/square/square.srcs/sim_1/new/square_tb.vhd
+$finish called at time : 250 ns : File "/home/fede/square/square.srcs/sim_1/new/square_tb.vhd" Line 64
