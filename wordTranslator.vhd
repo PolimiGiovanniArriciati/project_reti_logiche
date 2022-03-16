@@ -382,8 +382,7 @@ architecture Behavioral of project_reti_logiche is
     signal cur_state, next_state : S;
 
 begin
-    begin
-DATAPATH0: datapath port map(
+    DATAPATH0: datapath port map(
         i_clk,
         i_rst,
         i_start,
