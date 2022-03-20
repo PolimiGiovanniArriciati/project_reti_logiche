@@ -436,10 +436,10 @@ begin
             when S6 =>
                 next_state <= S7;
             when S7=>
-                if actually_done = '0' then
-                    next_state <= S8;
+                if actually_done = '1' then 
+                    next_state <= S4;
                 else
-                    next_state <= S1;
+                    next_state <= S8;
                 end if;
             when S8=>
                 next_state <= S9;
@@ -533,7 +533,7 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                o_done <= '0';
+                o_done <= '1'; 
             when S5 =>
                 op_cycle <= "01";
                 first_operation <= '1';
