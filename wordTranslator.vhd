@@ -25,10 +25,8 @@ entity datapath is
          op_cycle : in std_logic_vector(1 downto 0);
          out_sel : in std_logic;
          write_address_sel : in std_logic;
-         o_done : out std_logic;
+         actually_done : out std_logic;
          o_address : out std_logic_vector(15 downto 0);
-         o_en : out std_logic;
-         o_we : out std_logic;
          o_data : out std_logic_vector(7 downto 0));
 end datapath;
 
@@ -71,7 +69,6 @@ architecture Behavioral of datapath is
     signal o_reg4_mux : std_logic;
     signal o_reg5_mux : std_logic;
     signal o_reg6_mux : std_logic;
-    signal actually_done : std_logic;
     signal o_output1 : std_logic_vector(1 downto 0);
     signal o_output2 : std_logic_vector(1 downto 0);
     signal o_output3 : std_logic_vector(1 downto 0);
@@ -267,7 +264,7 @@ begin
         "XXXXXXXX" when others;
 
 
-    --------------------------------- Definizione di o_done ---------------------------------
+    --------------------------------- Definizione di actually_done ---------------------------------
     with len_seq_set select
  mux_len_seq <= i_data when '1',
         o_reg11 when '0',
@@ -354,10 +351,8 @@ architecture Behavioral of project_reti_logiche is
              op_cycle : in std_logic_vector(1 downto 0);
              out_sel : in std_logic;
              write_address_sel : in std_logic;
-             o_done : out std_logic;
+             actually_done : out std_logic;
              o_address : out std_logic_vector(15 downto 0);
-             o_en : out std_logic;
-             o_we : out std_logic;
              o_data : out std_logic_vector(7 downto 0));
     end component;
     signal r1_load : std_logic;
@@ -404,10 +399,8 @@ begin
             op_cycle,
             out_sel,
             write_address_sel,
-            o_done,
+            actually_done,
             o_address,
-            o_en,
-            o_we,
             o_data
         );
 
@@ -478,7 +471,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S2 =>
                 addr_set <= '1';
@@ -499,7 +491,6 @@ begin
                 first_operation <= '0';
                 out_sel <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S3 =>
                 r9_load <= '1';
@@ -521,7 +512,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S4 =>
                 r1_load <= '0';
@@ -543,7 +533,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S5 =>
                 op_cycle <= "01";
@@ -565,7 +554,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S6  =>
                 op_cycle <= "10";
@@ -587,7 +575,6 @@ begin
                 out_sel <= '0';
                 addr_set <= '0';
                 o_en <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S7 =>
                 o_we <= '1';
@@ -609,7 +596,6 @@ begin
                 first_operation <= '0';
                 addr_set <= '0';
                 o_en <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S8 =>
                 out_sel <= '1';
@@ -631,7 +617,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 o_done <= '0';
             when S9 =>
                 r1_load <= '1';
@@ -653,7 +638,6 @@ begin
                 o_en <= '0';
                 o_we <= '0';
                 write_address_sel <= '0';
-                actually_done <= '0';
                 op_cycle <= "00";
         end case;
     end process;
