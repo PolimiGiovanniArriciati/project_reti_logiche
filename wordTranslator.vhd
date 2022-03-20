@@ -94,46 +94,46 @@ begin
         end if;
     end process;
 
---------------------------------- Traduzione della parola ---------------------------------
+    --------------------------------- Traduzione della parola ---------------------------------
     with first_operation select
-        o_first_op1_mux <= '0' when '1',
-                            o_reg4 when '0',
-                            'X' when others;
+ o_first_op1_mux <= '0' when '1',
+        o_reg4 when '0',
+        'X' when others;
 
     with first_operation select
-        o_first_op2_mux <= '0' when '1',
-                            o_reg5 when '0',
-                            'X' when others;
+ o_first_op2_mux <= '0' when '1',
+        o_reg5 when '0',
+        'X' when others;
 
 
     with op_cycle select
-        o_reg2_mux <=   o_first_op1_mux when "01",
-                        o_reg1(1) when "10",
-                        o_reg1(4) when "11",
-                        'X' when others;
-    
-    with op_cycle select
-        o_reg3_mux <=   o_first_op2_mux when "01",
-                        o_reg1(2) when "10",
-                        o_reg1(5) when "11",
-                        'X' when others;
+ o_reg2_mux <=   o_first_op1_mux when "01",
+        o_reg1(1) when "10",
+        o_reg1(4) when "11",
+        'X' when others;
 
     with op_cycle select
-        o_reg4_mux <=   o_reg1(0) when "01",
-                        o_reg1(3) when "10",
-                        o_reg1(6) when "11",
-                        'X' when others;
+ o_reg3_mux <=   o_first_op2_mux when "01",
+        o_reg1(2) when "10",
+        o_reg1(5) when "11",
+        'X' when others;
 
     with op_cycle select
-        o_reg5_mux <=   o_reg1(1) when "01",
-                        o_reg1(4) when "10",
-                        o_reg1(7) when "11",
-                        'X' when others;
+ o_reg4_mux <=   o_reg1(0) when "01",
+        o_reg1(3) when "10",
+        o_reg1(6) when "11",
+        'X' when others;
 
     with op_cycle select
-        o_reg6_mux <=   o_reg1(2) when "01",
-                        o_reg1(5) when "10",
-                        'X' when others;
+ o_reg5_mux <=   o_reg1(1) when "01",
+        o_reg1(4) when "10",
+        o_reg1(7) when "11",
+        'X' when others;
+
+    with op_cycle select
+ o_reg6_mux <=   o_reg1(2) when "01",
+        o_reg1(5) when "10",
+        'X' when others;
 
     reg2: process(i_clk, i_rst)
     begin
@@ -190,54 +190,54 @@ begin
         end if;
     end process;
 
---------------------------------- parte di "output" del datapath ---------------------------------
+    --------------------------------- parte di "output" del datapath ---------------------------------
 
     sel_out1 <= o_reg3 & o_reg2;
 
     with sel_out1 select
-        o_output1(0) <= o_reg4 when "00",
-                        o_reg4 when "10",
-                        not(o_reg4) when "01",
-                        not(o_reg4) when "11",
-                        'X' when others;
+ o_output1(0) <= o_reg4 when "00",
+        o_reg4 when "10",
+        not(o_reg4) when "01",
+        not(o_reg4) when "11",
+        'X' when others;
 
     with sel_out1 select
-        o_output1(1) <= o_reg4 when "00",
-                        o_reg4 when "11",
-                        not(o_reg4) when "01",
-                        not(o_reg4) when "10",
-                        'X' when others;
+ o_output1(1) <= o_reg4 when "00",
+        o_reg4 when "11",
+        not(o_reg4) when "01",
+        not(o_reg4) when "10",
+        'X' when others;
 
     sel_out2 <= (o_reg4 & o_reg3);
 
     with sel_out2 select
-        o_output2(0) <= o_reg5 when "00",
-                        o_reg5 when "10",
-                        not(o_reg5) when "01",
-                        not(o_reg5) when "11",
-                        'X' when others;
+ o_output2(0) <= o_reg5 when "00",
+        o_reg5 when "10",
+        not(o_reg5) when "01",
+        not(o_reg5) when "11",
+        'X' when others;
 
     with sel_out2 select
-        o_output2(1) <= o_reg5 when "00",
-                        o_reg5 when "11",
-                        not(o_reg5) when "01",
-                        not(o_reg5) when "10",
-                        'X' when others;
+ o_output2(1) <= o_reg5 when "00",
+        o_reg5 when "11",
+        not(o_reg5) when "01",
+        not(o_reg5) when "10",
+        'X' when others;
     sel_out3 <= (o_reg5 & o_reg4);
 
     with sel_out3 select
-        o_output3(0) <= o_reg6 when "00",
-                        o_reg6 when "10",
-                        not(o_reg6) when "01",
-                        not(o_reg6) when "11",
-                        'X' when others;
+ o_output3(0) <= o_reg6 when "00",
+        o_reg6 when "10",
+        not(o_reg6) when "01",
+        not(o_reg6) when "11",
+        'X' when others;
 
     with sel_out3 select
-        o_output3(1) <= o_reg6 when "00",
-                        o_reg6 when "11",
-                        not(o_reg6) when "01",
-                        not(o_reg6) when "10",
-                        'X' when others;
+ o_output3(1) <= o_reg6 when "00",
+        o_reg6 when "11",
+        not(o_reg6) when "01",
+        not(o_reg6) when "10",
+        'X' when others;
 
     reg7: process(i_clk, i_rst)
     begin
@@ -262,16 +262,16 @@ begin
     end process;
 
     with out_sel select
-        o_data <=   o_reg7 & o_output1 when '0',
-                    o_output1 & o_output2 & o_reg8 when '1',
-                    "XXXXXXXX" when others;
+ o_data <=   o_reg7 & o_output1 when '0',
+        o_output1 & o_output2 & o_reg8 when '1',
+        "XXXXXXXX" when others;
 
 
---------------------------------- Definizione di o_done ---------------------------------
+    --------------------------------- Definizione di o_done ---------------------------------
     with len_seq_set select
-        mux_len_seq <= i_data when '1',
-            o_reg11 when '0',
-            "XXXXXXXX" when others;
+ mux_len_seq <= i_data when '1',
+        o_reg11 when '0',
+        "XXXXXXXX" when others;
 
     sub <= mux_len_seq - "00000001";
 
@@ -290,7 +290,7 @@ begin
 
 
 
---------------------------------- Scelta dell'indirizzo di memoria ---------------------------------
+    --------------------------------- Scelta dell'indirizzo di memoria ---------------------------------
 
     sum_add_r <= o_addr_set_r + "0000000000000001";
 
@@ -324,9 +324,9 @@ begin
 
 
     with write_address_sel select
-        o_address <=    o_reg9 when '0',
-                        o_reg10 when '1',
-                        "XXXXXXXXXXXXXXXX" when others;
+ o_address <=    o_reg9 when '0',
+        o_reg10 when '1',
+        "XXXXXXXXXXXXXXXX" when others;
 end Behavioral;
 
 --------------------------------- FINE ARCHITETTURA DATAPATH ---------------------------------
@@ -372,10 +372,10 @@ architecture Behavioral of project_reti_logiche is
     signal r10_load : std_logic;
     signal r11_load : std_logic;
     signal addr_set : std_logic;
-    singal len_seq_set :std_logic;
+    signal len_seq_set :std_logic;
     signal first_operation : std_logic;
     signal op_cycle : std_logic_vector(1 downto 0);
-    signal out_set : std_logic;
+    signal out_sel : std_logic;
     signal write_address_sel : std_logic;
     signal actually_done : std_logic;
     type S is(S1, S2, S3, S4, S5, S6, S7, S8, S9);
@@ -383,280 +383,278 @@ architecture Behavioral of project_reti_logiche is
 
 begin
     DATAPATH0: datapath port map(
-        i_clk,
-        i_rst,
-        i_start,
-        i_data,
-        r1_load,
-        r2_load,
-        r3_load,
-        r4_load,
-        r5_load,
-        r6_load,
-        r7_load,
-        r8_load,
-        r9_load,
-        r10_load,
-        r11_load,
-        len_seq_set,
-        addr_set,
-        first_operation,
-        op_cycle,
-        out_sel,
-        write_address_sel,
-        o_done,
-        o_address,
-        o_en,
-        o_we,
-        o_data
-    );
+            i_clk,
+            i_rst,
+            i_start,
+            i_data,
+            r1_load,
+            r2_load,
+            r3_load,
+            r4_load,
+            r5_load,
+            r6_load,
+            r7_load,
+            r8_load,
+            r9_load,
+            r10_load,
+            r11_load,
+            len_seq_set,
+            addr_set,
+            first_operation,
+            op_cycle,
+            out_sel,
+            write_address_sel,
+            o_done,
+            o_address,
+            o_en,
+            o_we,
+            o_data
+        );
 
-FSM_step: process(i_clk, i_rst)
-begin
-    if(i_rst = '1')
-        cur_state <= S1;
-    elsif
-        if i_clk'event and i_clk = '1' then
+    FSM_step: process(i_clk, i_rst)
+    begin
+        if(i_rst = '1') then
+            cur_state <= S1;
+        elsif i_clk'event and i_clk = '1' then
             cur_state <= next_state;
         end if;
-    end if;
-end process;
+    end process;
 
-FSM_next_state: process(cur_state, i_start, actually_done)
-begin
-    next_state <= cur_state;
-    case cur_state is
-        when S1 =>
-            if i_start = '1' then
-                next_state <= S2;
-            end if;
-        when S2 =>
-            next_state <= S3;
-        when S3 =>
-            if actually_done = '1' then
-                next_state <= S4;
-            else
-                next_state <= S5;
-            end if;
-        when S4 =>
-            next_state <= S1;
-        when S5 =>
-            next_state <= S6;
-        when S6 =>
-            next_state <= S7;
-        when S7=>
-            if actually_done = '0' then
-                next_state <= S8;
-            else
+    FSM_next_state: process(cur_state, i_start, actually_done)
+    begin
+        next_state <= cur_state;
+        case cur_state is
+            when S1 =>
+                if i_start = '1' then
+                    next_state <= S2;
+                end if;
+            when S2 =>
+                next_state <= S3;
+            when S3 =>
+                if actually_done = '1' then
+                    next_state <= S4;
+                else
+                    next_state <= S5;
+                end if;
+            when S4 =>
                 next_state <= S1;
-            end if;
-        when S8=>
-            next_state <= S9;
-        when S9 =>
-            next_state <= S6;
-    end case;
-end process;
+            when S5 =>
+                next_state <= S6;
+            when S6 =>
+                next_state <= S7;
+            when S7=>
+                if actually_done = '0' then
+                    next_state <= S8;
+                else
+                    next_state <= S1;
+                end if;
+            when S8=>
+                next_state <= S9;
+            when S9 =>
+                next_state <= S6;
+        end case;
+    end process;
 
-states_signals: process(cur_state)
-begin
-    case cur_state is
-		when S1 =>
-            r1_load <= '0';
-            r2_load <= '0';
-            r3_load <= '0';
-            r4_load <= '0';
-            r5_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            r9_load <= '0';
-            r10_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            op_cycle <= "00";
-            first_operation <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S2 =>
-            addr_set <= '1';
-			o_we <= '1';
-			o_en <= '1';
-			r9_load <= '1';
-			r10_load <= '1'
-            r1_load <= '0';
-            r2_load <= '0';
-            r3_load <= '0';
-            r4_load <= '0';
-            r5_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            len_seq_set <= '0';
-            op_cycle <= "00";
-            first_operation <= '0';
-            out_sel <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S3 =>
-			r9_load <= '1';
-			r11_load <= '1';
-            len_seq_set <= '1';
-            r1_load <= '0';
-            r2_load <= '0';
-            r3_load <= '0';
-            r4_load <= '0';
-            r5_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            r10_load <= '0';
-            op_cycle <= "00";
-            first_operation <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S4 =>
-            r1_load <= '0';
-            r2_load <= '0';
-            r3_load <= '0';
-            r4_load <= '0';
-            r5_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            r9_load <= '0';
-            r10_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            op_cycle <= "00";
-            first_operation <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S5 =>
-			op_cycle <= "01";
-			first_operation <= '1';
-			r1_load <= '1';
-			r2_load <= '1';
-			r3_load <= '1';
-			r4_load <= '1';
-			r5_load <= '1';
-			r6_load <= '1';
-            r7_load <= '1';
-            r8_load <= '0';
-            r9_load <= '0';
-            r10_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S6  =>
-			op_cycle <= "10";
-            r2_load <= '1';
-            r3_load <= '1';
-            r4_load <= '1';
-            r5_load <= '1';
-            r6_load <= '1';
-			r8_load <= '1';
-			write_address_sel <= '1';
-			o_we <= '1';
-            r1_load <= '0';
-            r7_load <= '0';
-            r9_load <= '0';
-            r10_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            first_operation <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S7 =>
-            o_we <= '1';
-            op_cycle <= "11";
-            out_sel <= '1';
-            r2_load <= '1';
-            r3_load <= '1';
-            r4_load <= '1';
-            r5_load <= '1';
-			r10_load <= '1';
-			r11_load <= '1';
-            write_address_sel <= '1';
-            r1_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            r9_load <= '0';
-            len_seq_set <= '0';
-            first_operation <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S8 =>
-            out_sel <= '1';
-            r2_load <= '1';
-            r3_load <= '1';
-            r4_load <= '1';
-            r5_load <= '1';
-			r9_load <= '1';
-            r10_load <= '1';
-            r1_load <= '0';
-            r6_load <= '0';
-            r7_load <= '0';
-            r8_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            op_cycle <= "00";
-            first_operation <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            o_done <= '0';
-		when S9 =>
-            r1_load <= '1';
-			r2_load <= '1';
-			r3_load <= '1';
-			r4_load <= '1';
-			r5_load <= '1';
-			r6_load <= '1';
-			r7_load <= '1';
-            r10_load <= '1';
-			op_cycle <= "01";
-            r8_load <= '0';
-            r9_load <= '0';
-            r11_load <= '0';
-            len_seq_set <= '0';
-            first_operation <= '0';
-            out_sel <= '0';
-            addr_set <= '0';
-            o_en <= '0';
-            o_we <= '0';
-            write_address_sel <= '0';
-            actually_done <= '0';
-            op_cycle <= "00";
-		end case;
-	end process;
+    states_signals: process(cur_state)
+    begin
+        case cur_state is
+            when S1 =>
+                r1_load <= '0';
+                r2_load <= '0';
+                r3_load <= '0';
+                r4_load <= '0';
+                r5_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r9_load <= '0';
+                r10_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S2 =>
+                addr_set <= '1';
+                o_we <= '1';
+                o_en <= '1';
+                r9_load <= '1';
+                r10_load <= '1';
+                r1_load <= '0';
+                r2_load <= '0';
+                r3_load <= '0';
+                r4_load <= '0';
+                r5_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                len_seq_set <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                out_sel <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S3 =>
+                r9_load <= '1';
+                r11_load <= '1';
+                len_seq_set <= '1';
+                r1_load <= '0';
+                r2_load <= '0';
+                r3_load <= '0';
+                r4_load <= '0';
+                r5_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r10_load <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S4 =>
+                r1_load <= '0';
+                r2_load <= '0';
+                r3_load <= '0';
+                r4_load <= '0';
+                r5_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r9_load <= '0';
+                r10_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S5 =>
+                op_cycle <= "01";
+                first_operation <= '1';
+                r1_load <= '1';
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r6_load <= '1';
+                r7_load <= '1';
+                r8_load <= '0';
+                r9_load <= '0';
+                r10_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S6  =>
+                op_cycle <= "10";
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r6_load <= '1';
+                r8_load <= '1';
+                write_address_sel <= '1';
+                o_we <= '1';
+                r1_load <= '0';
+                r7_load <= '0';
+                r9_load <= '0';
+                r10_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S7 =>
+                o_we <= '1';
+                op_cycle <= "11";
+                out_sel <= '1';
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r10_load <= '1';
+                r11_load <= '1';
+                write_address_sel <= '1';
+                r1_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r9_load <= '0';
+                len_seq_set <= '0';
+                first_operation <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S8 =>
+                out_sel <= '1';
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r9_load <= '1';
+                r10_load <= '1';
+                r1_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                o_done <= '0';
+            when S9 =>
+                r1_load <= '1';
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r6_load <= '1';
+                r7_load <= '1';
+                r10_load <= '1';
+                op_cycle <= "01";
+                r8_load <= '0';
+                r9_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                actually_done <= '0';
+                op_cycle <= "00";
+        end case;
+    end process;
 end Behavioral;
