@@ -289,7 +289,7 @@ begin
 
     --------------------------------- Scelta dell'indirizzo di memoria ---------------------------------
 
-    sum_add_r <= o_addr_set_r + "0000000000000001";
+    sum_add_r <= o_reg9 + "0000000000000001";
 
     reg9: process(i_clk, i_rst)
     begin
@@ -304,7 +304,7 @@ begin
         end if;
     end process;
 
-    sum_add_w <= o_addr_set_w + "0000000000000001";
+    sum_add_w <= o_reg10 + "0000000000000001";
 
     reg10: process(i_clk, i_rst)
     begin
@@ -321,9 +321,9 @@ begin
 
 
     with write_address_sel select
- o_address <=    o_reg9 when '0',
-        o_reg10 when '1',
-        "XXXXXXXXXXXXXXXX" when others;
+        o_address <=    o_reg9 when '0',
+            o_reg10 when '1',
+            "XXXXXXXXXXXXXXXX" when others;
 end Behavioral;
 
 --------------------------------- FINE ARCHITETTURA DATAPATH ---------------------------------
@@ -452,71 +452,39 @@ begin
 
     states_signals: process(cur_state)
     begin
+        len_seq_set <= '0';
+        addr_set <= '0';
+        first_operation <= '0';
+        r1_load <= '0';
+        r2_load <= '0';
+        r3_load <= '0';
+        r4_load <= '0';
+        r5_load <= '0';
+        r6_load <= '0';
+        r7_load <= '0';
+        r8_load <= '0';
+        r9_load <= '0';
+        r10_load <= '0';
+        r11_load <= '0';
+        write_address_sel <= '0';
+        op_cycle <= "00";
+        out_sel <= '0';
+        o_en <= '0';
+        o_we <= '0';
+        o_done <= '0';
         case cur_state is
             when S1 =>
-                r1_load <= '0';
-                r2_load <= '0';
-                r3_load <= '0';
-                r4_load <= '0';
-                r5_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r9_load <= '0';
-                r10_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '0';
             when S2 =>
                 addr_set <= '1';
-                o_we <= '0';
-                o_en <= '1'; --Da qui leggo dalla memoria
                 r9_load <= '1';
                 r10_load <= '1';
-                r1_load <= '0';
-                r2_load <= '0';
-                r3_load <= '0';
-                r4_load <= '0';
-                r5_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                len_seq_set <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                out_sel <= '0';
-                write_address_sel <= '0';
-                o_done <= '0';
+                o_en <= '1';
             when S3, S4=>
+                len_seq_set <= '1';
                 r9_load <= '1';
                 r11_load <= '1';
-                len_seq_set <= '1';
-                r1_load <= '0';
-                r2_load <= '0';
-                r3_load <= '0';
-                r4_load <= '0';
-                r5_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r10_load <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
                 o_en <= '1';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '0';
             when S5 =>
-                op_cycle <= "01";
                 first_operation <= '1';
                 r1_load <= '1';
                 r2_load <= '1';
@@ -525,19 +493,8 @@ begin
                 r5_load <= '1';
                 r6_load <= '1';
                 r7_load <= '1';
-                r8_load <= '0';
-                r9_load <= '0';
-                r10_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '0';
+                op_cycle <= "01";
             when S6  =>
-                op_cycle <= "10";
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
@@ -545,22 +502,9 @@ begin
                 r6_load <= '1';
                 r8_load <= '1';
                 write_address_sel <= '1';
+                op_cycle <= "10";
                 o_we <= '1';
-                r1_load <= '0';
-                r7_load <= '0';
-                r9_load <= '0';
-                r10_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_done <= '0';
             when S7 =>
-                o_we <= '1';
-                op_cycle <= "11";
-                out_sel <= '1';
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
@@ -568,37 +512,17 @@ begin
                 r10_load <= '1';
                 r11_load <= '1';
                 write_address_sel <= '1';
-                r1_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r9_load <= '0';
-                len_seq_set <= '0';
-                first_operation <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_done <= '0';
-            when S8 =>
+                op_cycle <= "11";
                 out_sel <= '1';
+                o_we <= '1';
+            when S8 =>
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
                 r5_load <= '1';
                 r9_load <= '1';
-                r10_load <= '1';
-                r1_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '0';
+                r11_load <= '1';
+                out_sel <= '1';
             when S9 =>
                 r1_load <= '1';
                 r2_load <= '1';
@@ -609,38 +533,8 @@ begin
                 r7_load <= '1';
                 r10_load <= '1';
                 op_cycle <= "01";
-                r8_load <= '0';
-                r9_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                op_cycle <= "00";
             when StopState =>
-                r1_load <= '0';
-                r2_load <= '0';
-                r3_load <= '0';
-                r4_load <= '0';
-                r5_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r9_load <= '0';
-                r10_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '1'; 
+                o_done <= '1';
         end case;
     end process;
 end Behavioral;
