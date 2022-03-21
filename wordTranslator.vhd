@@ -192,49 +192,50 @@ begin
     sel_out1 <= o_reg3 & o_reg2;
 
     with sel_out1 select
- o_output1(0) <= o_reg4 when "00",
-        o_reg4 when "10",
-        not(o_reg4) when "01",
-        not(o_reg4) when "11",
-        'X' when others;
+        o_output1(0) <= o_reg4 when "00",
+                o_reg4 when "10",
+                not(o_reg4) when "01",
+                not(o_reg4) when "11",
+                'X' when others;
 
     with sel_out1 select
- o_output1(1) <= o_reg4 when "00",
-        o_reg4 when "11",
-        not(o_reg4) when "01",
-        not(o_reg4) when "10",
-        'X' when others;
+        o_output1(1) <= o_reg4 when "00",
+                o_reg4 when "11",
+                not(o_reg4) when "01",
+                not(o_reg4) when "10",
+                'X' when others;
 
     sel_out2 <= (o_reg4 & o_reg3);
 
     with sel_out2 select
- o_output2(0) <= o_reg5 when "00",
-        o_reg5 when "10",
-        not(o_reg5) when "01",
-        not(o_reg5) when "11",
-        'X' when others;
+        o_output2(0) <= o_reg5 when "00",
+                o_reg5 when "10",
+                not(o_reg5) when "01",
+                not(o_reg5) when "11",
+                'X' when others;
 
     with sel_out2 select
- o_output2(1) <= o_reg5 when "00",
-        o_reg5 when "11",
-        not(o_reg5) when "01",
-        not(o_reg5) when "10",
-        'X' when others;
+        o_output2(1) <= o_reg5 when "00",
+                o_reg5 when "11",
+                not(o_reg5) when "01",
+                not(o_reg5) when "10",
+                'X' when others;
+
     sel_out3 <= (o_reg5 & o_reg4);
 
     with sel_out3 select
- o_output3(0) <= o_reg6 when "00",
-        o_reg6 when "10",
-        not(o_reg6) when "01",
-        not(o_reg6) when "11",
-        'X' when others;
+        o_output3(0) <= o_reg6 when "00",
+                o_reg6 when "10",
+                not(o_reg6) when "01",
+                not(o_reg6) when "11",
+                'X' when others;
 
     with sel_out3 select
- o_output3(1) <= o_reg6 when "00",
-        o_reg6 when "11",
-        not(o_reg6) when "01",
-        not(o_reg6) when "10",
-        'X' when others;
+        o_output3(1) <= o_reg6 when "00",
+                o_reg6 when "11",
+                not(o_reg6) when "01",
+                not(o_reg6) when "10",
+                'X' when others;
 
     reg7: process(i_clk, i_rst)
     begin
@@ -373,7 +374,7 @@ architecture Behavioral of project_reti_logiche is
     signal out_sel : std_logic;
     signal write_address_sel : std_logic;
     signal actually_done : std_logic;
-    type S is(S1, S2, S3, S4, S5, S6, S7, S8, S9, StopState);
+    type S is(S1, S2, S3, S4, SfirstOperation, S6, S7, S8, S9, StopState);
     signal cur_state, next_state : S;
 
 begin
@@ -426,8 +427,8 @@ begin
             when S3 =>
                 next_state <= S4;
             when S4 =>
-                next state <= S5;
-            when S5 =>
+                next state <= SfirstOperation;
+            when SfirstOperation =>
                 if actually_done = '1' then
                    next_state <= StopState;
                 else
@@ -479,12 +480,12 @@ begin
                 r9_load <= '1';
                 r10_load <= '1';
                 o_en <= '1';
-            when S3, S4=>
+            when S3 | S4=>
                 len_seq_set <= '1';
                 r9_load <= '1';
                 r11_load <= '1';
                 o_en <= '1';
-            when S5 =>
+            when SfirstOperation =>
                 first_operation <= '1';
                 r1_load <= '1';
                 r2_load <= '1';
@@ -518,11 +519,11 @@ begin
             when S8 =>
                 r2_load <= '1';
                 r3_load <= '1';
-                r4_load <= '1';
-                r5_load <= '1';
                 r9_load <= '1';
                 r11_load <= '1';
                 out_sel <= '1';
+                op_cycle <= "01";
+                o_en = '1';
             when S9 =>
                 r1_load <= '1';
                 r2_load <= '1';
