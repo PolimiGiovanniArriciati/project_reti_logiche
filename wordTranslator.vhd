@@ -373,7 +373,7 @@ architecture Behavioral of project_reti_logiche is
     signal out_sel : std_logic;
     signal write_address_sel : std_logic;
     signal actually_done : std_logic;
-    type S is(S1, S2, S3, S4, S5, S6, S7, S8, S9);
+    type S is(S1, S2, S3, S4, S5, S6, S7, S8, S9, StopState);
     signal cur_state, next_state : S;
 
 begin
@@ -424,20 +424,20 @@ begin
             when S2 =>
                 next_state <= S3;
             when S3 =>
-                if actually_done = '1' then
-                    next_state <= S4;
-                else
-                    next_state <= S5;
-                end if;
+                next_state <= S4;
             when S4 =>
-                next_state <= S1;
+                next state <= S5;
             when S5 =>
-                next_state <= S6;
+                if actually_done = '1' then
+                   next_state <= StopState;
+                else
+                    next_state <= S6;
+                end if;            
             when S6 =>
                 next_state <= S7;
             when S7=>
                 if actually_done = '1' then 
-                    next_state <= S4;
+                    next_state <= StopState;
                 else
                     next_state <= S8;
                 end if;
@@ -445,6 +445,8 @@ begin
                 next_state <= S9;
             when S9 =>
                 next_state <= S6;
+            when StopState =>
+                next_state <= S1;
         end case;
     end process;
 
@@ -492,7 +494,7 @@ begin
                 out_sel <= '0';
                 write_address_sel <= '0';
                 o_done <= '0';
-            when S3 =>
+            when S3, S4=>
                 r9_load <= '1';
                 r11_load <= '1';
                 len_seq_set <= '1';
@@ -513,27 +515,6 @@ begin
                 o_we <= '0';
                 write_address_sel <= '0';
                 o_done <= '0';
-            when S4 =>
-                r1_load <= '0';
-                r2_load <= '0';
-                r3_load <= '0';
-                r4_load <= '0';
-                r5_load <= '0';
-                r6_load <= '0';
-                r7_load <= '0';
-                r8_load <= '0';
-                r9_load <= '0';
-                r10_load <= '0';
-                r11_load <= '0';
-                len_seq_set <= '0';
-                op_cycle <= "00";
-                first_operation <= '0';
-                out_sel <= '0';
-                addr_set <= '0';
-                o_en <= '0';
-                o_we <= '0';
-                write_address_sel <= '0';
-                o_done <= '1'; 
             when S5 =>
                 op_cycle <= "01";
                 first_operation <= '1';
@@ -639,6 +620,27 @@ begin
                 o_we <= '0';
                 write_address_sel <= '0';
                 op_cycle <= "00";
+            when StopState =>
+                r1_load <= '0';
+                r2_load <= '0';
+                r3_load <= '0';
+                r4_load <= '0';
+                r5_load <= '0';
+                r6_load <= '0';
+                r7_load <= '0';
+                r8_load <= '0';
+                r9_load <= '0';
+                r10_load <= '0';
+                r11_load <= '0';
+                len_seq_set <= '0';
+                op_cycle <= "00";
+                first_operation <= '0';
+                out_sel <= '0';
+                addr_set <= '0';
+                o_en <= '0';
+                o_we <= '0';
+                write_address_sel <= '0';
+                o_done <= '1'; 
         end case;
     end process;
 end Behavioral;
