@@ -277,7 +277,7 @@ begin
         if(i_rst = '1') then
             o_reg11 <= "00000000";
         elsif i_clk'event and i_clk = '1' then
-            if(r1_load = '1') then
+            if(r11_load = '1') then
                 o_reg11 <= sub;
             end if;
         end if;
@@ -474,8 +474,8 @@ begin
                 o_done <= '0';
             when S2 =>
                 addr_set <= '1';
-                o_we <= '1';
-                o_en <= '1';
+                o_we <= '0';
+                o_en <= '1'; --Da qui leggo dalla memoria
                 r9_load <= '1';
                 r10_load <= '1';
                 r1_load <= '0';
@@ -509,7 +509,7 @@ begin
                 first_operation <= '0';
                 out_sel <= '0';
                 addr_set <= '0';
-                o_en <= '0';
+                o_en <= '1';
                 o_we <= '0';
                 write_address_sel <= '0';
                 o_done <= '0';
