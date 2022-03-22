@@ -60,8 +60,6 @@ architecture Behavioral of datapath is
     signal o_reg10 : std_logic_vector(15 downto 0);
     signal o_reg11 : std_logic_vector(7 downto 0);
     signal mux_len_seq : std_logic_vector(7 downto 0);
-    signal o_addr_set_w : std_logic_vector(15 downto 0);
-    signal o_addr_set_r : std_logic_vector(15 downto 0);
     signal o_first_op1_mux : std_logic;
     signal o_first_op2_mux : std_logic;
     signal o_reg2_mux : std_logic;
@@ -148,7 +146,7 @@ begin
         if(i_rst = '1') then
             o_reg3 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(r2_load = '1') then
+            if(r3_load = '1') then
                 o_reg3 <= o_reg3_mux;
             end if;
         end if;
@@ -159,7 +157,7 @@ begin
         if(i_rst = '1') then
             o_reg4 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(r2_load = '1') then
+            if(r4_load = '1') then
                 o_reg4 <= o_reg4_mux;
             end if;
         end if;
@@ -170,7 +168,7 @@ begin
         if(i_rst = '1') then
             o_reg5 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(r2_load = '1') then
+            if(r5_load = '1') then
                 o_reg5 <= o_reg5_mux;
             end if;
         end if;
@@ -181,7 +179,7 @@ begin
         if(i_rst = '1') then
             o_reg6 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(r2_load = '1') then
+            if(r6_load = '1') then
                 o_reg6 <= o_reg6_mux;
             end if;
         end if;
@@ -189,49 +187,49 @@ begin
 
     --------------------------------- parte di "output" del datapath ---------------------------------
 
-    sel_out1 <= o_reg3 & o_reg2;
+    sel_out1 <= o_reg3_mux & o_reg2_mux;
 
     with sel_out1 select
-        o_output1(0) <= o_reg4 when "00",
+        o_output1(1) <= o_reg4 when "00",
                 o_reg4 when "10",
                 not(o_reg4) when "01",
                 not(o_reg4) when "11",
                 'X' when others;
 
     with sel_out1 select
-        o_output1(1) <= o_reg4 when "00",
+        o_output1(0) <= o_reg4 when "00",
                 o_reg4 when "11",
                 not(o_reg4) when "01",
                 not(o_reg4) when "10",
                 'X' when others;
 
-    sel_out2 <= (o_reg4 & o_reg3);
+    sel_out2 <= (o_reg4_mux & o_reg3_mux);
 
     with sel_out2 select
-        o_output2(0) <= o_reg5 when "00",
+        o_output2(1) <= o_reg5 when "00",
                 o_reg5 when "10",
                 not(o_reg5) when "01",
                 not(o_reg5) when "11",
                 'X' when others;
 
     with sel_out2 select
-        o_output2(1) <= o_reg5 when "00",
+        o_output2(0) <= o_reg5 when "00",
                 o_reg5 when "11",
                 not(o_reg5) when "01",
                 not(o_reg5) when "10",
                 'X' when others;
 
-    sel_out3 <= (o_reg5 & o_reg4);
+    sel_out3 <= (o_reg5_mux & o_reg4_mux);
 
     with sel_out3 select
-        o_output3(0) <= o_reg6 when "00",
+        o_output3(1) <= o_reg6 when "00",
                 o_reg6 when "10",
                 not(o_reg6) when "01",
                 not(o_reg6) when "11",
                 'X' when others;
 
     with sel_out3 select
-        o_output3(1) <= o_reg6 when "00",
+        o_output3(0) <= o_reg6 when "00",
                 o_reg6 when "11",
                 not(o_reg6) when "01",
                 not(o_reg6) when "10",
@@ -374,7 +372,7 @@ architecture Behavioral of project_reti_logiche is
     signal out_sel : std_logic;
     signal write_address_sel : std_logic;
     signal actually_done : std_logic;
-    type S is(S1, S2, S3, S4, SfirstOperation, S6, S7, S8, S9, StopState);
+    type S is(S1, S2, S3, S4, S5, SfirstOperation, S6, S7, S8, S9, StopState, S10);
     signal cur_state, next_state : S;
 
 begin
@@ -427,7 +425,11 @@ begin
             when S3 =>
                 next_state <= S4;
             when S4 =>
-                next state <= SfirstOperation;
+                    next_state <= S5;
+            when S5 => 
+                next_state <= S10;
+            when S10 =>       
+                next_state <= SfirstOperation;
             when SfirstOperation =>
                 if actually_done = '1' then
                    next_state <= StopState;
@@ -480,14 +482,22 @@ begin
                 r9_load <= '1';
                 r10_load <= '1';
                 o_en <= '1';
-            when S3 | S4=>
+            when S3=> 
+                len_seq_set <= '1';
+                --r9_load <= '1';
+                r11_load <= '1';
+                o_en <= '1';
+            when S4=>
                 len_seq_set <= '1';
                 r9_load <= '1';
                 r11_load <= '1';
                 o_en <= '1';
-            when SfirstOperation =>
+            when S5 => 
                 first_operation <= '1';
                 r1_load <= '1';
+                o_en <= '1';
+            when SfirstOperation =>
+                first_operation <= '1';
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
@@ -495,35 +505,51 @@ begin
                 r6_load <= '1';
                 r7_load <= '1';
                 op_cycle <= "01";
+                o_we <= '1';
+                o_en <= '1';
+            when S10 =>
+                r2_load <= '1';
+                r3_load <= '1';
+                r4_load <= '1';
+                r5_load <= '1';
+                r6_load <= '1';
+                r7_load <= '1';
+                op_cycle <= "01";
+                o_we <= '1';
+                o_en <= '1';
             when S6  =>
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
                 r5_load <= '1';
                 r6_load <= '1';
+                r7_load <= '1';
                 r8_load <= '1';
+                r10_load <= '1';
                 write_address_sel <= '1';
                 op_cycle <= "10";
                 o_we <= '1';
+                o_en <= '1';
             when S7 =>
                 r2_load <= '1';
                 r3_load <= '1';
                 r4_load <= '1';
                 r5_load <= '1';
+                r9_load <= '1';
                 r10_load <= '1';
                 r11_load <= '1';
                 write_address_sel <= '1';
                 op_cycle <= "11";
                 out_sel <= '1';
                 o_we <= '1';
+                o_en <= '1';
             when S8 =>
                 r2_load <= '1';
                 r3_load <= '1';
-                r9_load <= '1';
                 r11_load <= '1';
                 out_sel <= '1';
                 op_cycle <= "01";
-                o_en = '1';
+                o_en <= '1';
             when S9 =>
                 r1_load <= '1';
                 r2_load <= '1';
@@ -532,8 +558,8 @@ begin
                 r5_load <= '1';
                 r6_load <= '1';
                 r7_load <= '1';
-                r10_load <= '1';
                 op_cycle <= "01";
+                o_en <= '1';
             when StopState =>
                 o_done <= '1';
         end case;
