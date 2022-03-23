@@ -253,6 +253,8 @@ begin
         end if;
     end process;
 
+    actually_done <= '1' when (set = '1' and i_data = "00000000") else '0';
+
     actually_done <= '1' when (o_reg11 = "00000000") else '0';
 
 
@@ -292,8 +294,8 @@ begin
 
     with write_address_sel select
         o_address <=    o_reg9 when '0',
-            o_reg10 when '1',
-            "XXXXXXXXXXXXXXXX" when others;
+                        o_reg10 when '1',
+                        "XXXXXXXXXXXXXXXX" when others;
 end Behavioral;
 
 --------------------------------- FINE ARCHITETTURA DATAPATH ---------------------------------
@@ -341,7 +343,7 @@ architecture Behavioral of project_reti_logiche is
     signal out_sel : std_logic;
     signal write_address_sel : std_logic;
     signal actually_done : std_logic;
-    type S is(S1, S2, S3, S4, S5, SfirstOperation, S6, S7, S8, S9, StopState, S10);
+    type S is(S1, S2, S3, S4, S5, S6, S7, S8, SfirstOperation, StopState);
     signal cur_state, next_state : S;
 
 begin
@@ -393,39 +395,33 @@ begin
                 next_state <= S3;
 
             when S3 =>
-                next_state <= S4;
+                if actually_done = '1' then
+                   next_state <= S1;
+                else
+                    next_state <= S4;
+                end if;
 
             when S4 =>
-                next_state <= S5;
-
-            when S5 => 
-                next_state <= S10;
-
-            when S10 =>       
                 next_state <= SfirstOperation;
 
             when SfirstOperation =>
-                if actually_done = '1' then
-                   next_state <= StopState;
-                else
-                    next_state <= S6;
-                end if;      
+                next_state <= S5;
+
+            when S5 =>
+                next_state <= S6;
 
             when S6 =>
                 next_state <= S7;
 
             when S7=>
                 if actually_done = '1' then 
-                    next_state <= StopState;
+                    next_state <= S1;
                 else
                     next_state <= S8;
                 end if;
 
             when S8=>
-                next_state <= S9;
-
-            when S9 =>
-                next_state <= S6;
+                next_state <= S5;
 
             when StopState =>
                 next_state <= S1;
@@ -460,54 +456,29 @@ begin
                 r9_load <= '1';
                 r10_load <= '1';
                 o_en <= '1';
+
             when S3=> 
                 set <= '1';
                 r11_load <= '1';
                 o_en <= '1';
+
             when S4=>
                 r9_load <= '1';
                 r11_load <= '1';
                 o_en <= '1';
-            when SfirstOperation =>
+
+            when S5 =>
                 r1_load <= '1';
-                first_operation <= '1';
-                r2_load <= '1';
-                r3_load <= '1';
                 r4_load <= '1';
                 r5_load <= '1';
-                r6_load <= '1';
-                r7_load <= '1';
-                op_cycle <= "01";
-                o_we <= '1';
-                o_en <= '1';
-            when S10 =>
-                r2_load <= '1';
-                r3_load <= '1';
-                r4_load <= '1';
-                r5_load <= '1';
-                r6_load <= '1';
-                r7_load <= '1';
-                op_cycle <= "01";
-                o_we <= '1';
-                o_en <= '1';
-            when S6  =>
-                r2_load <= '1';
-                r3_load <= '1';
-                r4_load <= '1';
-                r5_load <= '1';
-                r6_load <= '1';
-                r7_load <= '1';
                 r8_load <= '1';
-                r10_load <= '1';
                 write_address_sel <= '1';
                 op_cycle <= "10";
+                out_sel <= '0';
                 o_we <= '1';
                 o_en <= '1';
-            when S7 =>
-                r2_load <= '1';
-                r3_load <= '1';
-                r4_load <= '1';
-                r5_load <= '1';
+
+            when S6  =>
                 r9_load <= '1';
                 r10_load <= '1';
                 r11_load <= '1';
@@ -516,25 +487,28 @@ begin
                 out_sel <= '1';
                 o_we <= '1';
                 o_en <= '1';
+
+            when S7 =>
+                r1_load <= '1';
+                o_en <= '1';
+
             when S8 =>
-                r2_load <= '1';
+                r1_load <= '1';
                 r3_load <= '1';
                 r11_load <= '1';
                 out_sel <= '1';
                 op_cycle <= "01";
                 o_en <= '1';
-            when S9 =>
+
+            when StopState =>
+                o_done <= '1';
+
+            when SfirstOperation =>
                 r1_load <= '1';
-                r2_load <= '1';
-                r3_load <= '1';
-                r4_load <= '1';
-                r5_load <= '1';
-                r6_load <= '1';
+                first_operation <= '1';
                 r7_load <= '1';
                 op_cycle <= "01";
                 o_en <= '1';
-            when StopState =>
-                o_done <= '1';
         end case;
     end process;
 end Behavioral;
