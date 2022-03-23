@@ -264,20 +264,16 @@ begin
 
 
     --------------------------------- Definizione di actually_done ---------------------------------
-    with len_seq_set select
- mux_len_seq <= i_data when '1',
-        o_reg11 when '0',
-        "XXXXXXXX" when others;
-
-    sub <= mux_len_seq - "00000001";
-
+    
     reg11: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
             o_reg11 <= "00000000";
         elsif i_clk'event and i_clk = '1' then
-            if(r11_load = '1') then
-                o_reg11 <= sub;
+            if(r11_load = '1' and len_seq_set = '1') then
+                o_reg11 <= i_data;
+            elsif(r11_load = '1' and len_seq_set = '0') then
+                o_reg11 <= o_reg11 - "00000001";
             end if;
         end if;
     end process;
@@ -526,6 +522,7 @@ begin
                 r7_load <= '1';
                 r8_load <= '1';
                 r10_load <= '1';
+                r11_load <= '1';
                 write_address_sel <= '1';
                 op_cycle <= "10";
                 o_we <= '1';
@@ -537,7 +534,7 @@ begin
                 r5_load <= '1';
                 r9_load <= '1';
                 r10_load <= '1';
-                r11_load <= '1';
+                --r11_load <= '1';
                 write_address_sel <= '1';
                 op_cycle <= "11";
                 out_sel <= '1';
@@ -546,7 +543,6 @@ begin
             when S8 =>
                 r2_load <= '1';
                 r3_load <= '1';
-                r11_load <= '1';
                 out_sel <= '1';
                 op_cycle <= "01";
                 o_en <= '1';
