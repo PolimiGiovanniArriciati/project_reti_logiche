@@ -1,0 +1,4 @@
+tb_seq_min passsato al primo tentativo, il 21 marzo. Legge 00 alla prima cella in memoria come dovrebbe e si interrompe. Avevamo preso in considerazione questo caso
+
+Stavamo pilotando male o_en.
+	
