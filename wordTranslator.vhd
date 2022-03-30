@@ -22,7 +22,7 @@ entity datapath is
          first_operation : in std_logic;
          op_cycle : in std_logic_vector(1 downto 0);
          out_sel : in std_logic;
-         write_address_sel : in std_logic;
+         rw_address_sel : in std_logic;
          actually_done : out std_logic;
          o_address : out std_logic_vector(15 downto 0);
          o_data : out std_logic_vector(7 downto 0));
@@ -280,7 +280,7 @@ begin
     end process;
 
 
-    with write_address_sel select
+    with rw_address_sel select
         o_address <=    ("00000000" & o_read_address) when '0',
                         o_write_address when '1',
                         "XXXXXXXXXXXXXXXX" when others;
@@ -308,7 +308,7 @@ architecture Behavioral of project_reti_logiche is
              first_operation : in std_logic;
              op_cycle : in std_logic_vector(1 downto 0);
              out_sel : in std_logic;
-             write_address_sel : in std_logic;
+             rw_address_sel : in std_logic;
              actually_done : out std_logic;
              o_address : out std_logic_vector(15 downto 0);
              o_data : out std_logic_vector(7 downto 0));
@@ -326,7 +326,7 @@ architecture Behavioral of project_reti_logiche is
     signal first_operation : std_logic;
     signal op_cycle : std_logic_vector(1 downto 0);
     signal out_sel : std_logic;
-    signal write_address_sel : std_logic;
+    signal rw_address_sel : std_logic;
     signal actually_done : std_logic;
     type S is(S1, S2, S2b, S3, S4, S5, S6, S7, S8, SfirstOperation, StopState);
     signal cur_state, next_state : S;
@@ -350,7 +350,7 @@ begin
             first_operation,
             op_cycle,
             out_sel,
-            write_address_sel,
+            rw_address_sel,
             actually_done,
             o_address,
             o_data
@@ -427,7 +427,7 @@ begin
         reg_r_addr_load <= '0';
         reg_w_addr_load <= '0';
         reg_len_seq_load <= '0';
-        write_address_sel <= '0';
+        rw_address_sel <= '0';
         op_cycle <= "00";
         out_sel <= '0';
         o_en <= '0';
@@ -461,7 +461,7 @@ begin
                 reg_i_data_load <= '1';
                 r8_load <= '1';
                 reg_w_addr_load <= '1';
-                write_address_sel <= '1';
+                rw_address_sel <= '1';
                 op_cycle <= "10";
                 out_sel <= '0';
                 o_we <= '1';
@@ -472,7 +472,7 @@ begin
                 reg_nxt_word2_load <= '1';
                 reg_r_addr_load <= '1';
                 reg_w_addr_load <= '1';
-                write_address_sel <= '1';
+                rw_address_sel <= '1';
                 op_cycle <= "11";
                 out_sel <= '1';
                 o_we <= '1';
