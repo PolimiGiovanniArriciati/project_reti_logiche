@@ -11,8 +11,8 @@ entity datapath is
          i_start : in std_logic;
          i_data : in std_logic_vector(7 downto 0);
          reg_i_data_load : in std_logic;
-         reg_nxt_word1_load : in std_logic;
-         reg_nxt_word2_load : in std_logic;
+         reg_next_word1_load : in std_logic;
+         reg_next_word2_load : in std_logic;
          r7_load : in std_logic;
          r8_load : in std_logic;
          reg_r_addr_load : in std_logic;
@@ -47,8 +47,8 @@ end project_reti_logiche;
 
 architecture Behavioral of datapath is
     signal o_reg_i_data : std_logic_vector(7 downto 0);
-    signal o_nxt_word1 : std_logic;
-    signal o_nxt_word2 : std_logic;
+    signal o_out1 : std_logic;
+    signal o_next_word2  : std_logic;
     signal o_reg7 : std_logic_vector(5 downto 0);
     signal o_reg8 : std_logic_vector(3 downto 0);
     signal o_read_address : std_logic_vector(7 downto 0);
@@ -58,14 +58,14 @@ architecture Behavioral of datapath is
     signal o_first_op2_mux : std_logic;
     signal o_reg2_mux : std_logic;
     signal o_reg3_mux : std_logic;
-    signal o_nxt_word1_mux : std_logic;
-    signal o_nxt_word2_mux : std_logic;
+    signal o_out1_mux : std_logic;
+    signal o_out2_mux : std_logic;
     signal o_out3_mux : std_logic;
     signal o_output1 : std_logic_vector(1 downto 0);
     signal o_output2 : std_logic_vector(1 downto 0);
     signal o_output3 : std_logic_vector(1 downto 0);
-    signal sel_nxt_word1 : std_logic_vector(1 downto 0);
-    signal sel_nxt_word2 : std_logic_vector(1 downto 0);
+    signal sel_out1 : std_logic_vector(1 downto 0);
+    signal sel_out2 : std_logic_vector(1 downto 0);
     signal sel_out3 : std_logic_vector(1 downto 0);
     signal sum_add_w : std_logic_vector(15 downto 0);
     signal sum_add_r : std_logic_vector(7 downto 0);
@@ -91,12 +91,12 @@ begin
 
     with first_operation select
         o_first_op1_mux <= '0' when '1',
-                            o_nxt_word1 when '0',
+                            o_out1 when '0',
                             'X' when others;
             
     with first_operation select
         o_first_op2_mux <= '0' when '1',
-                            o_nxt_word2 when '0',
+                            o_next_word2  when '0',
                             'X' when others;
             
 
@@ -113,13 +113,13 @@ begin
                         'X' when others;
 
     with op_cycle select
-         o_nxt_word1_mux <=  i_data(7) when "01",
+         o_out1_mux <=  i_data(7) when "01",
                         o_reg_i_data(4) when "10",
                         o_reg_i_data(1) when "11",
                         'X' when others;
 
     with op_cycle select
-         o_nxt_word2_mux <=  i_data(6) when "01",
+         o_out2_mux <=  i_data(6) when "01",
                         o_reg_i_data(3) when "10",
                         o_reg_i_data(0) when "11",
                         'X' when others;
@@ -129,63 +129,63 @@ begin
                         o_reg_i_data(2) when "10",
                         'X' when others;
 
-    reg_nxt_word1: process(i_clk, i_rst)
+    reg_next_word1: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
-            o_nxt_word1 <= '0';
+            o_out1 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(reg_nxt_word1_load = '1') then
-                o_nxt_word1 <= o_nxt_word1_mux;
+            if(reg_next_word1_load = '1') then
+                o_out1 <= o_out1_mux;
             end if;
         end if;
     end process;
 
-    reg_nxt_word2: process(i_clk, i_rst)
+    reg_next_word2: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
-            o_nxt_word2 <= '0';
+            o_next_word2 <= '0';
         elsif i_clk'event and i_clk = '1' then
-            if(reg_nxt_word2_load = '1') then
-                o_nxt_word2 <= o_nxt_word2_mux;
+            if(reg_next_word2_load = '1') then
+                o_next_word2 <= o_out2_mux;
             end if;
         end if;
     end process;
 
     --------------------------------- parte di "output" del datapath --------------------------------
 
-    sel_nxt_word1 <= o_reg3_mux & o_reg2_mux;
+    sel_out1 <= o_reg3_mux & o_reg2_mux;
 
-    with sel_nxt_word1 select
-        o_output1(1) <= o_nxt_word1_mux when "00",
-                        o_nxt_word1_mux when "10",
-                        not(o_nxt_word1_mux) when "01",
-                        not(o_nxt_word1_mux) when "11",
+    with sel_out1 select
+        o_output1(1) <= o_out1_mux when "00",
+                        o_out1_mux when "10",
+                        not(o_out1_mux) when "01",
+                        not(o_out1_mux) when "11",
                         'X' when others;
 
-    with sel_nxt_word1 select
-        o_output1(0) <= o_nxt_word1_mux when "00",
-                        o_nxt_word1_mux when "11",
-                        not(o_nxt_word1_mux) when "01",
-                        not(o_nxt_word1_mux) when "10",
+    with sel_out1 select
+        o_output1(0) <= o_out1_mux when "00",
+                        o_out1_mux when "11",
+                        not(o_out1_mux) when "01",
+                        not(o_out1_mux) when "10",
                         'X' when others;
 
-    sel_nxt_word2 <=  o_nxt_word1_mux & o_reg3_mux;
+    sel_out2 <=  o_out1_mux & o_reg3_mux;
 
-    with sel_nxt_word2 select
-        o_output2(1) <= o_nxt_word2_mux when "00",
-                        o_nxt_word2_mux when "10",
-                        not(o_nxt_word2_mux) when "01",
-                        not(o_nxt_word2_mux) when "11",
+    with sel_out2 select
+        o_output2(1) <= o_out2_mux when "00",
+                        o_out2_mux when "10",
+                        not(o_out2_mux) when "01",
+                        not(o_out2_mux) when "11",
                         'X' when others;
 
-    with sel_nxt_word2 select
-        o_output2(0) <= o_nxt_word2_mux when "00",
-                        o_nxt_word2_mux when "11",
-                        not(o_nxt_word2_mux) when "01",
-                        not(o_nxt_word2_mux) when "10",
+    with sel_out2 select
+        o_output2(0) <= o_out2_mux when "00",
+                        o_out2_mux when "11",
+                        not(o_out2_mux) when "01",
+                        not(o_out2_mux) when "10",
                         'X' when others;
 
-    sel_out3 <= o_nxt_word2_mux & o_nxt_word1_mux;
+    sel_out3 <= o_out2_mux & o_out1_mux;
 
     with sel_out3 select
         o_output3(1) <= o_out3_mux when "00",
@@ -297,8 +297,8 @@ architecture Behavioral of project_reti_logiche is
              i_start : in std_logic;
              i_data : in std_logic_vector(7 downto 0);
              reg_i_data_load : in std_logic;
-             reg_nxt_word1_load : in std_logic;
-             reg_nxt_word2_load : in std_logic;
+             reg_next_word1_load : in std_logic;
+             reg_next_word2_load : in std_logic;
              r7_load : in std_logic;
              r8_load : in std_logic;
              reg_r_addr_load : in std_logic;
@@ -315,8 +315,8 @@ architecture Behavioral of project_reti_logiche is
     end component;
     signal seq_min_check : std_logic;
     signal reg_i_data_load : std_logic;
-    signal reg_nxt_word1_load : std_logic;
-    signal reg_nxt_word2_load : std_logic;
+    signal reg_next_word1_load : std_logic;
+    signal reg_next_word2_load : std_logic;
     signal r7_load : std_logic;
     signal r8_load : std_logic;
     signal reg_r_addr_load : std_logic;
@@ -339,8 +339,8 @@ begin
             i_start,
             i_data,
             reg_i_data_load,
-            reg_nxt_word1_load,
-            reg_nxt_word2_load,
+            reg_next_word1_load,
+            reg_next_word2_load,
             r7_load,
             r8_load,
             reg_r_addr_load,
@@ -420,8 +420,8 @@ begin
         seq_min_check <= '0';
         first_operation <= '0';
         reg_i_data_load <= '0';
-        reg_nxt_word1_load <= '0';
-        reg_nxt_word2_load <= '0';
+        reg_next_word1_load <= '0';
+        reg_next_word2_load <= '0';
         r7_load <= '0';
         r8_load <= '0';
         reg_r_addr_load <= '0';
@@ -468,8 +468,8 @@ begin
                 o_en <= '1';
 
             when S6  =>
-                reg_nxt_word1_load <= '1';
-                reg_nxt_word2_load <= '1';
+                reg_next_word1_load <= '1';
+                reg_next_word2_load <= '1';
                 reg_r_addr_load <= '1';
                 reg_w_addr_load <= '1';
                 rw_address_sel <= '1';
