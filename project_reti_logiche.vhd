@@ -51,7 +51,7 @@ architecture Behavioral of datapath is
     signal o_reg7 : std_logic_vector(5 downto 0);
     signal o_reg8 : std_logic_vector(3 downto 0);
     signal o_reg_r_address : std_logic_vector(7 downto 0);
-    signal o_reg_w_address : std_logic_vector(15 downto 0);
+    signal o_reg_w_address : std_logic_vector(10 downto 0);
     signal o_reg_len_seq : std_logic_vector(7 downto 0);
     signal o_last_state_mux : std_logic_vector(1 downto 0);
     signal o_out1_mux : std_logic;
@@ -63,7 +63,7 @@ architecture Behavioral of datapath is
     signal out1_sel : std_logic_vector(1 downto 0);
     signal out2_sel : std_logic_vector(1 downto 0);
     signal out3_sel : std_logic_vector(1 downto 0);
-    signal sum_add_w : std_logic_vector(15 downto 0);
+    signal sum_add_w : std_logic_vector(10 downto 0);
     signal sum_add_r : std_logic_vector(7 downto 0);
     signal done_seq_min : std_logic;
     signal done_seq_other : std_logic;
@@ -232,25 +232,26 @@ begin
         end if;
     end process;
 
-    sum_add_w <= o_reg_w_address + "0000000000000001";
+    sum_add_w <= o_reg_w_address + "00000000001";
 
     write_address: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
-            o_reg_w_address <= "0000000000000000";
+            o_reg_w_address <= "00000000000";
         elsif i_clk'event and i_clk = '1' then
             if(reg_w_addr_load = '1' and set = '1') then
-                o_reg_w_address <= "0000001111101000";
+                o_reg_w_address <= "01111101000";
             elsif(reg_w_addr_load = '1') then
                 o_reg_w_address <= sum_add_w;
             end if;
         end if;
     end process;
-    other_signal <= rw_address_sel & set;                       
+    other_signal <= rw_address_sel & set;   
+
     with other_signal select
         o_address <=    "00000000" & o_reg_r_address  when "00",
                         "0000000000000000"  when "01",
-                        o_reg_w_address when "10",
+                        "00000" & o_reg_w_address when "10",
                         "XXXXXXXXXXXXXXXX" when "11",
                         "XXXXXXXXXXXXXXXX" when others;
 end Behavioral;
