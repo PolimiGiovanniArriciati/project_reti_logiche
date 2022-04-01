@@ -1,5 +1,3 @@
---final
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -51,7 +49,7 @@ architecture Behavioral of datapath is
     signal o_reg7 : std_logic_vector(5 downto 0);
     signal o_reg8 : std_logic_vector(3 downto 0);
     signal o_reg_r_address : std_logic_vector(7 downto 0);
-    signal o_reg_w_address : std_logic_vector(10 downto 0);
+    signal o_reg_w_address : std_logic_vector(15 downto 0);
     signal o_reg_len_seq : std_logic_vector(7 downto 0);
     signal o_last_state_mux : std_logic_vector(1 downto 0);
     signal o_out1_mux : std_logic;
@@ -63,12 +61,9 @@ architecture Behavioral of datapath is
     signal out1_sel : std_logic_vector(1 downto 0);
     signal out2_sel : std_logic_vector(1 downto 0);
     signal out3_sel : std_logic_vector(1 downto 0);
-    signal sum_add_w : std_logic_vector(10 downto 0);
+    signal sum_add_w : std_logic_vector(15 downto 0);
     signal sum_add_r : std_logic_vector(7 downto 0);
-    signal done_seq_min : std_logic;
-    signal done_seq_other : std_logic;
-    signal other_signal : std_logic_vector(1 downto 0);
-
+    signal mem_sel : std_logic_vector(1 downto 0);
 begin
     --------------------------------- Gestione della parola in input ---------------------------------
 
@@ -209,9 +204,7 @@ begin
         end if;
     end process;
 
-    actually_done <= '1' when done_seq_min = '1' or done_seq_other = '1' else '0';
-    done_seq_min <= '1' when seq_min_check = '1' and i_data = "00000000" else '0';
-    done_seq_other <= '1' when "00000000" & (o_reg_len_seq + "00000001") = o_reg_r_address else '0';
+    actually_done <= '1' when (o_reg_len_seq + "0000001") = o_reg_r_address else '0';
     
 
 
@@ -232,26 +225,25 @@ begin
         end if;
     end process;
 
-    sum_add_w <= o_reg_w_address + "00000000001";
+    sum_add_w <= o_reg_w_address + "0000000000000001";
 
     write_address: process(i_clk, i_rst)
     begin
         if(i_rst = '1') then
-            o_reg_w_address <= "00000000000";
+            o_reg_w_address <= "0000000000000000";
         elsif i_clk'event and i_clk = '1' then
             if(reg_w_addr_load = '1' and set = '1') then
-                o_reg_w_address <= "01111101000";
+                o_reg_w_address <= "0000001111101000";
             elsif(reg_w_addr_load = '1') then
                 o_reg_w_address <= sum_add_w;
             end if;
         end if;
     end process;
-    other_signal <= rw_address_sel & set;   
-
-    with other_signal select
+    mem_sel <= rw_address_sel & set;                       
+    with mem_sel select
         o_address <=    "00000000" & o_reg_r_address  when "00",
                         "0000000000000000"  when "01",
-                        "00000" & o_reg_w_address when "10",
+                        o_reg_w_address when "10",
                         "XXXXXXXXXXXXXXXX" when "11",
                         "XXXXXXXXXXXXXXXX" when others;
 end Behavioral;
